@@ -3,7 +3,7 @@ FROM node:20
 # Set work directory
 WORKDIR /app
 
-COPY . .
+COPY ./ ./
 
 # Install dependencies
 RUN npm install --omit=dev
