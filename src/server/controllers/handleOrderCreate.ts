@@ -44,14 +44,12 @@ export const handleOrderCreate = (req: Request, res: Response): void => {
 	const channel = guild.channels.cache.get(channelId);
 
 	if (channel && channel instanceof TextChannel) {
+		const orderNumber = `#${orderData.order_number}`;
 		const price: string = `${orderData.current_total_price} ${orderData.currency}`;
 		const country: string = orderData.shipping_address.country;
 
 		channel.send(
-			`New Order: ${orderData.order_number}.
-			
-			Amount: ${price}.
-			Country: ${country}.
+			`New Order ${orderNumber}.\nAmount: ${price}.\nCountry: ${country}.
 		`);
 	} else {
 		console.error("Channel not found or is not a text channel");
