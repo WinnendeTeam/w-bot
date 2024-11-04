@@ -1,3 +1,3 @@
 export default (name: string, reference: string) => {
 	return `Product Name: "${name}". Could you please generate a new product page using the earlier provided markdown description message as a example, follow the structure and format of the example send before, do not append anything else like usp's. We have some info for you to work with, an competitor product page copy. Respond 1 version, in English without anything else in the response. This text should be high-converting for a fashion store called InModa. The headings should be h3 and bold. The reponse can only be 2000 characters maximum. Please rewrite the following text as a high converting product page using the template/example provided: ${reference}`;
-}
+};

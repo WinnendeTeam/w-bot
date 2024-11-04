@@ -6,21 +6,25 @@ const anthropic = new Anthropic({
 });
 
 export async function promptMessage(content: string[]): Promise<string | null> {
-
 	const contentFormatted: Array<TextBlockParam> = content.map((v, i) => {
 		return {
 			type: "text",
 			text: v
-		}
+		};
 	});
 
-	const productDescriptionResponse = (await anthropic.messages.create({
-		model: "claude-3-5-sonnet-latest",
-		max_tokens: 1024,
-		messages: [{
-			role: "user", content: contentFormatted
-		}],
-	})).content[0];
+	const productDescriptionResponse = (
+		await anthropic.messages.create({
+			model: "claude-3-5-sonnet-latest",
+			max_tokens: 1024,
+			messages: [
+				{
+					role: "user",
+					content: contentFormatted
+				}
+			]
+		})
+	).content[0];
 
 	if (productDescriptionResponse.type !== "text") {
 		console.error("AI Error");

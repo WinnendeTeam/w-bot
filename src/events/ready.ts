@@ -8,12 +8,12 @@ import type { ArgsOf, Client } from "discordx";
 
 @Discord()
 export class Ready {
-  @On({ event: Events.ClientReady })
-  clientReady([_client]: ArgsOf<Events.ClientReady>): void {
-    const bot = container.resolve<Client>(Beans.IBotToken);
+	@On({ event: Events.ClientReady })
+	clientReady([_client]: ArgsOf<Events.ClientReady>): void {
+		const bot = container.resolve<Client>(Beans.IBotToken);
 
-    bot.initApplicationCommands();
+		bot.initApplicationCommands();
 
-    console.log("Bot started");
-  }
+		console.log("Bot started");
+	}
 }

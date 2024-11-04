@@ -7,7 +7,7 @@ import { IntentsBitField } from "discord.js";
 import { Client } from "discordx";
 import { container } from "tsyringe";
 import { Beans } from "./models/framework/DI/Beans";
-import "./server";
+import "./server/setup";
 
 // Discord Bot
 
@@ -15,23 +15,24 @@ abstract class Main {
 	private static readonly bot = new Client({
 		intents: [
 			IntentsBitField.Flags.Guilds,
+			IntentsBitField.Flags.DirectMessages,
 			IntentsBitField.Flags.GuildMembers,
 			IntentsBitField.Flags.GuildMessages,
 			IntentsBitField.Flags.GuildMessageReactions,
-			IntentsBitField.Flags.GuildVoiceStates,
+			IntentsBitField.Flags.GuildVoiceStates
 		],
 
 		silent: false,
 
 		allowedMentions: {
-			parse: ["users"],
+			parse: ["users"]
 		},
 
 		guards: [NotBot],
 
 		simpleCommand: {
-			prefix: "!",
-		},
+			prefix: "!"
+		}
 	});
 
 	public static async run() {

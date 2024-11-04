@@ -1,5 +1,5 @@
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
-import Anthropic from '@anthropic-ai/sdk';
+import Anthropic from "@anthropic-ai/sdk";
 import { ApplicationCommandOptionType, type CommandInteraction } from "discord.js";
 
 import productDescriptionTemplate from "../models/ai/templates/productDescription";
@@ -21,7 +21,7 @@ export class Description {
 			description: "Competitor Product Description",
 			name: "reference",
 			required: true,
-			type: ApplicationCommandOptionType.String,
+			type: ApplicationCommandOptionType.String
 		})
 		reference: string,
 
@@ -29,12 +29,10 @@ export class Description {
 	): Promise<void> {
 		await interaction.deferReply();
 
-		const productDescriptionResponse = await promptMessage(
-			[
-				productDescriptionTemplate,
-				productDescriptionPrompt(name, reference)
-			]
-		);
+		const productDescriptionResponse = await promptMessage([
+			productDescriptionTemplate,
+			productDescriptionPrompt(name, reference)
+		]);
 
 		if (productDescriptionResponse == null) {
 			await interaction.editReply("AI Error!");
@@ -42,6 +40,5 @@ export class Description {
 		}
 
 		await interaction.editReply(`${productDescriptionResponse}`);
-
 	}
 }
