@@ -48,9 +48,7 @@ export const handleOrderCreate = (req: Request, res: Response): void => {
 		const price: string = `${orderData.current_total_price} ${orderData.currency}`;
 		const country: string = orderData.shipping_address.country;
 
-		channel.send(
-			`New Order ${orderNumber}.\nAmount: ${price}.\nCountry: ${country}.
-		`);
+		channel.send(`New Order ${orderNumber}\nAmount: ${price}\nCountry: ${country}`);
 	} else {
 		console.error("Channel not found or is not a text channel");
 		res.status(500).send("Internal Server Error: Channel not found or not a text channel");
