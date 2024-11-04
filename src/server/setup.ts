@@ -2,9 +2,15 @@
 import express from "express";
 import corsMiddleware from "./middleware/cors";
 import webhookRoutes from "./webhooks/index";
+import { IncomingMessage, ServerResponse } from "http";
 
 const app = express();
-app.use(express.json());
+app.use(express.json({
+	verify: (req: IncomingMessage, res: ServerResponse<IncomingMessage>, buf: Buffer) => {
+		(req as any).rawBody = buf;
+	},
+})
+);
 app.use(corsMiddleware);
 
 // Health check endpoint

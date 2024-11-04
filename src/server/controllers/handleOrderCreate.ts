@@ -7,8 +7,8 @@ import { TextChannel } from "discord.js";
 
 export const handleOrderCreate = (req: Request, res: Response): void => {
 	const hmac = req.get("X-Shopify-Hmac-SHA256") as string;
-	const body = JSON.stringify(req.body);
-	const secret = process.env.SHOPIFY_WEBHOOK_SECRET; // Replace with your actual webhook secret
+	const body = (req as any).rawBody;
+	const secret = process.env.SHOPIFY_WEBHOOK_SECRET;
 
 	if (!secret) {
 		console.error("Webhook secret is not defined.");
@@ -20,7 +20,7 @@ export const handleOrderCreate = (req: Request, res: Response): void => {
 	const hash = crypto.createHmac("sha256", secret).update(body, "utf8").digest("base64");
 
 	if (hash !== hmac) {
-		console.log("Webhook verification failed");
+		console.log("Webhook verification failed. HMAC does not match.");
 		res.status(403).send("Unauthorized");
 		return;
 	}
@@ -33,12 +33,22 @@ export const handleOrderCreate = (req: Request, res: Response): void => {
 
 	const serverId = '1144233680332664932';
 	const channelId = '1302947779156639765';
-	const channel = bot.guilds.cache.get(serverId)?.channels.cache.get(channelId);
+	const guild = bot.guilds.cache.get(serverId);
+
+	if (!guild) {
+		console.error("Guild not found");
+		res.status(500).send("Internal Server Error: Guild not found");
+		return;
+	}
+
+	const channel = guild.channels.cache.get(channelId);
 
 	if (channel && channel instanceof TextChannel) {
-		channel.send(`Order received: ${orderData}`);
+		channel.send(`Order received: ${JSON.stringify(orderData)}`);
 	} else {
 		console.error("Channel not found or is not a text channel");
+		res.status(500).send("Internal Server Error: Channel not found or not a text channel");
+		return;
 	}
 
 	// Respond to Shopify to confirm receipt
